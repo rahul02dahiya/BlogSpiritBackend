@@ -8,6 +8,18 @@ const { body, validationResult } = require('express-validator');
 router.get('/fetchallblogs', fetchuser, async (req, res) => {
 
     try {
+        const blogs = await Blogs.find({  })
+        res.json(blogs)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("SOme error occured")
+    }
+
+})
+
+router.get('/fetchmyblogs', fetchuser, async (req, res) => {
+
+    try {
         const blogs = await Blogs.find({ user: req.user.id })
         res.json(blogs)
     } catch (error) {

@@ -55,8 +55,8 @@ router.post('/createuser', [
         success = true;
         res.json({success, authToken: authToken })
     }
-    catch (error) {
-        console.log(error.message);
+    catch (errors) {
+        console.log(errors.message);
         res.status(500).send("SOme error occured")
     }
 
@@ -79,11 +79,11 @@ router.post('/login', [
             let user = await User.findOne({ email })
             // return error if user does not exist
             if (!user) {
-                return res.status(400).json({success, "error": "Kindly login with correct credentials" })
+                return res.status(400).json({success, "errors": "Kindly login with correct credentials" })
             }
             const comparePass = await bcrypt.compare(password, user.password)
             if (!comparePass) {
-                return res.status(400).json({success, "error": "Kindly login with correct credentials" })
+                return res.status(400).json({success, "errors": "Kindly login with correct credentials" })
             }
             const payload = {
                 user: {
@@ -97,8 +97,8 @@ router.post('/login', [
 
 
         }
-        catch (error) {
-            console.log(error.message);
+        catch (errors) {
+            console.log(errors.message);
             res.status(500).send("SOme internal error occured")
         }
     })
@@ -111,8 +111,8 @@ router.post('/getuser', fetchuser,
             userId = req.user.id
             const user = await User.findById(userId).select("-password");
             res.send(user)
-        } catch (error) {
-            console.log(error.message);
+        } catch (errors) {
+            console.log(errors.message);
             res.status(500).send("SOme internal error occured")
         }
     }
